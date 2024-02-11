@@ -14,15 +14,15 @@ class THomeCategories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categoryController = Get.put(CategoryController());
-    // ignore: unused_local_variable
-    List<String> image = [
-      'assets/images/nike2.png',
-      'assets/images/nike1.png',
-      'assets/images/nike.png',
-      'assets/images/nike2.png',
-      'assets/images/nike.png',
-      'assets/images/nike2.png',
-    ];
+    // // ignore: unused_local_variable
+    // List<String> image = [
+    //   'assets/images/nike2.png',
+    //   'assets/images/nike1.png',
+    //   'assets/images/nike.png',
+    //   'assets/images/nike2.png',
+    //   'assets/images/nike.png',
+    //   'assets/images/nike2.png',
+    // ];
     return Obx(() {
       if (categoryController.isLoading.value) return const TCategoriesShimmer();
       if (categoryController.featuredCategories.isEmpty) {

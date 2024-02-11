@@ -78,25 +78,24 @@ class SettingsScreen extends StatelessWidget {
               subTitle: "Withdraw balance to registered bank account",
               onTap: () {},
             ),
-            // TSettingMenuTile(
-            //   icon: Iconsax.discount_shape,
-            //   title: 'My Coupons',
-            //   subTitle: "List at all the discounted coupons",
-            //   onTap: () {},
-            // ),
-            // TSettingMenuTile(
-            //   icon: Iconsax.notification,
-            //   title: 'Notifications',
-            //   subTitle: "Set any kind of notifications message",
-            //   onTap: () {},
-            // ),
-            // TSettingMenuTile(
-            //   icon: Iconsax.security_card,
-            //   title: 'Account Privacy',
-            //   subTitle: "Manage data usage and connected accounts",
-            //   onTap: () {},
-            // ),
-
+            TSettingMenuTile(
+              icon: Iconsax.discount_shape,
+              title: 'My Coupons',
+              subTitle: "List at all the discounted coupons",
+              onTap: () {},
+            ),
+            TSettingMenuTile(
+              icon: Iconsax.notification,
+              title: 'Notifications',
+              subTitle: "Set any kind of notifications message",
+              onTap: () {},
+            ),
+            TSettingMenuTile(
+              icon: Iconsax.security_card,
+              title: 'Account Privacy',
+              subTitle: "Manage data usage and connected accounts",
+              onTap: () {},
+            ),
             const Padding(
               padding: EdgeInsets.all(TSizes.defaultSpace),
               child: TSectionHadding(
@@ -104,7 +103,6 @@ class SettingsScreen extends StatelessWidget {
                 showActionButton: false,
               ),
             ),
-
             const TSettingMenuTile(
                 icon: Iconsax.document_upload,
                 title: 'Load Data',
@@ -115,30 +113,30 @@ class SettingsScreen extends StatelessWidget {
               subTitle: 'Set recommendation based on Location',
               trailing: Obx(
                 () => Switch(
+                    value: controller.geoLocator.value,
+                    onChanged: (value) {
+                      controller.geoLocator.value = value;
+                    }),
+              ),
+            ),
+            TSettingMenuTile(
+              icon: Iconsax.security_user,
+              title: 'Safe Mode',
+              subTitle: 'Search result is safe for all ages',
+              trailing: Switch(value: false, onChanged: (value) {}),
+            ),
+            TSettingMenuTile(
+              icon: Iconsax.image,
+              title: 'HD Image Quality',
+              subTitle: 'Set Image Quality to be seen',
+              trailing: Obx(
+                () => Switch(
                     value: controller.switchValue.value,
                     onChanged: (value) {
                       controller.switchValue.value = value;
                     }),
               ),
             ),
-            // TSettingMenuTile(
-            //   icon: Iconsax.security_user,
-            //   title: 'Safe Mode',
-            //   subTitle: 'Search result is safe for all ages',
-            //   trailing: Switch(value: false, onChanged: (value) {}),
-            // ),
-            // TSettingMenuTile(
-            //   icon: Iconsax.image,
-            //   title: 'HD Image Quality',
-            //   subTitle: 'Set Image Quality to be seen',
-            //   trailing: Obx(
-            //     () => Switch(
-            //         value: controller.switchValue.value,
-            //         onChanged: (value) {
-            //           controller.switchValue.value = value;
-            //         }),
-            //   ),
-            // ),
             const SizedBox(
               height: TSizes.spaceBtwSections,
             ),

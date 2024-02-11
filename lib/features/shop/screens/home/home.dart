@@ -9,9 +9,11 @@ import 'package:ecommerce_app/features/shop/screens/all_products/all_product.dar
 import 'package:ecommerce_app/features/shop/screens/home/widgets/home_app_bar.dart';
 import 'package:ecommerce_app/features/shop/screens/home/widgets/home_categories.dart';
 import 'package:ecommerce_app/features/shop/screens/home/widgets/promo_slider.dart';
+import 'package:ecommerce_app/utills/constants/colors.dart';
 import 'package:ecommerce_app/utills/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,89 +22,96 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(CategoryController());
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(
-        children: [
-          TPrimaryHeaderContainer(
-            child: Column(
-              children: [
-                const THomeAppBar(),
-                const SizedBox(
-                  height: TSizes.spaceBtwSections,
-                ),
-                const TSearchContainer(
-                  text: 'Search in Store',
-                ),
-                const SizedBox(
-                  height: TSizes.spaceBtwSections,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: TSizes.defaultSpace),
-                  child: Column(
-                    children: [
-                      TSectionHadding(
-                        title: 'Popular Categories',
-                        onPressed: () {},
-                      ),
-                      const SizedBox(
-                        height: TSizes.spaceBtwItems,
-                      ),
-                      const THomeCategories()
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: TSizes.spaceBtwSections,
-                )
-              ],
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.all(TSizes.defaultSpace),
+        body: LiquidPullToRefresh(
+      onRefresh: controller.fetchCategories,
+      animSpeedFactor: 2,
+      height: MediaQuery.of(context).size.height * 1 * 0.2,
+      color: TColors.primary,
+      showChildOpacityTransition: false,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            TPrimaryHeaderContainer(
               child: Column(
                 children: [
-                  TPromoSlider(
-                    banners: const [
-                      "assets/images/nike1.png",
-                      "assets/images/nike2.png",
-                      "assets/logos/snow.jpg",
-                      "assets/logos/tagged.png",
-                    ],
+                  const THomeAppBar(),
+                  const SizedBox(
+                    height: TSizes.spaceBtwSections,
+                  ),
+                  const TSearchContainer(
+                    text: 'Search in Store',
                   ),
                   const SizedBox(
                     height: TSizes.spaceBtwSections,
                   ),
-                  TSectionHadding(
-                    title: 'Popular Products',
-                    onPressed: () => Get.to(() => const AllPrdocut(
-                          title: 'Popular Products',
-                        )),
+                  Padding(
+                    padding: const EdgeInsets.only(left: TSizes.defaultSpace),
+                    child: Column(
+                      children: [
+                        TSectionHadding(
+                          title: 'Popular Categories',
+                          onPressed: () {},
+                        ),
+                        const SizedBox(
+                          height: TSizes.spaceBtwItems,
+                        ),
+                        const THomeCategories()
+                      ],
+                    ),
                   ),
                   const SizedBox(
-                    height: TSizes.spaceBtwItems,
-                  ),
-                  Obx(() {
-                    if (controller.isLoading.value) {
-                      return const TVerticalProductShimmer();
-                    }
-                    if (controller.featuredCategories.isEmpty) {
-                      return Center(
-                        child: Text(
-                          'NO Data Found!',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                    height: TSizes.spaceBtwSections,
+                  )
+                ],
+              ),
+            ),
+            Padding(
+                padding: const EdgeInsets.all(TSizes.defaultSpace),
+                child: Column(
+                  children: [
+                    TPromoSlider(
+                      banners: const [
+                        "assets/images/nike1.png",
+                        "assets/images/nike2.png",
+                        "assets/logos/snow.jpg",
+                        "assets/logos/tagged.png",
+                      ],
+                    ),
+                    const SizedBox(
+                      height: TSizes.spaceBtwSections,
+                    ),
+                    TSectionHadding(
+                      title: 'Popular Products',
+                      onPressed: () => Get.to(() => const AllPrdocut(
+                            title: 'Popular Products',
+                          )),
+                    ),
+                    const SizedBox(
+                      height: TSizes.spaceBtwItems,
+                    ),
+                    Obx(() {
+                      if (controller.isLoading.value) {
+                        return const TVerticalProductShimmer();
+                      }
+                      if (controller.featuredCategories.isEmpty) {
+                        return Center(
+                          child: Text(
+                            'NO Data Found!',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        );
+                      }
+                      return TGridLayout(
+                        itemCount: controller.featuredCategories.length,
+                        itemBuilder: (_, index) => ProductCardVertical(
+                          categoryModel: controller.featuredCategories[index],
                         ),
                       );
-                    }
-                    return TGridLayout(
-                      itemCount: controller.featuredCategories.length,
-                      itemBuilder: (_, index) => ProductCardVertical(
-                        categoryModel: controller.featuredCategories[index],
-                      ),
-                    );
-                  })
-                ],
-              ))
-        ],
+                    })
+                  ],
+                ))
+          ],
+        ),
       ),
     ));
   }

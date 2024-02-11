@@ -21,6 +21,7 @@ class UserController extends GetxController {
   final verifyemail = TextEditingController();
   final verifyPassword = TextEditingController();
   final hidePassword = false.obs;
+  final geoLocator = true.obs;
   final switchValue = true.obs;
   GlobalKey<FormState> reAuthFormKey = GlobalKey<FormState>();
 

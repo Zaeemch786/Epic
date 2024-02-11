@@ -23,27 +23,39 @@ class UserAdressScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(TSizes.defaultSpace),
-          child: Obx(
-            () => FutureBuilder(
-                key: Key(controller.refreshData.value.toString()),
-                future: controller.getallUserAdress(),
-                builder: (context, snapshot) {
-                  final response = TcloudHelperFunction.checkMultiRecordstate(
-                      snapshot: snapshot);
-                  if (response != null) return response;
-                  final adresses = snapshot.data!;
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: adresses.length,
-                      itemBuilder: (_, index) => TSingleAdress(
-                            adress: adresses[index],
-                            onTap: () =>
-                                controller.selectedAdress(adresses[index]),
-                          ));
-                }),
+      body: RefreshIndicator(
+        onRefresh: controller.getallUserAdress,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(TSizes.defaultSpace),
+            child: Column(
+              children: [
+                Obx(
+                  () => FutureBuilder(
+                      key: Key(controller.refreshData.value.toString()),
+                      future: controller.getallUserAdress(),
+                      builder: (context, snapshot) {
+                        final response =
+                            TcloudHelperFunction.checkMultiRecordstate(
+                                snapshot: snapshot);
+                        if (response != null) return response;
+                        final adresses = snapshot.data!;
+                        return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: adresses.length,
+                            itemBuilder: (_, index) => TSingleAdress(
+                                  adress: adresses[index],
+                                  onTap: () => controller
+                                      .selectedAdress(adresses[index]),
+                                ));
+                      }),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 1.5,
+                )
+              ],
+            ),
           ),
         ),
       ),
